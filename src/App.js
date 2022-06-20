@@ -1,25 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import { Component } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+import "./App.css";
+
+class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      movies: [
+        { name: "Fast 9", year: 2020 },
+        { name: "Fast X", year: 2022 },
+        { name: "Fast 11", year: 2023 },
+      ],
+    };
+  }
+
+  changeName = (evenet) => {
+    this.setState({
+      movies: [
+        { name: evenet.target.value, year: 2025 },
+        { name: "Fast X", year: 2022 },
+        { name: "Fast 11", year: 2023 },
+      ],
+    });
+  };
+
+  render() {
+    return (
+      <div className="App">
+        <h1>Welcome to laraveller.</h1>
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          My favorite movie is {this.state.movies[0].name}
+          {this.state.movies[0].year}.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+        <p>
+          My favorite movie is {this.state.movies[1].name}
+          {this.state.movies[1].year}.
+        </p>
+        <p>
+          My favorite movie is {this.state.movies[2].name}
+          {this.state.movies[2].year}.
+        </p>
+        <input
+          type="text"
+          onChange={this.changeName}
+          value={this.state.movies[0].name}
+        />
+      </div>
+    );
+  }
 }
 
 export default App;
