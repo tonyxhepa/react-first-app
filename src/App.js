@@ -7,45 +7,51 @@ class App extends Component {
     super();
 
     this.state = {
-      movies: [
-        { name: "Fast 9", year: 2020 },
-        { name: "Fast X", year: 2022 },
-        { name: "Fast 11", year: 2023 },
-      ],
+      movies: [],
+      showMovies: false,
     };
   }
 
-  changeName = (evenet) => {
-    this.setState({
-      movies: [
-        { name: evenet.target.value, year: 2025 },
-        { name: "Fast X", year: 2022 },
-        { name: "Fast 11", year: 2023 },
-      ],
-    });
-  };
-
+  componentDidMount() {
+    fetch(
+      "https://my-json-server.typicode.com/horizon-code-academy/fake-movies-api/movies"
+    )
+      .then((response) => response.json())
+      .then((apiMovies) =>
+        this.setState(() => {
+          return { movies: apiMovies };
+        })
+      );
+  }
   render() {
+    let { showMovies } = this.state;
+    let renderMovies = null;
+
+    if (showMovies) {
+      renderMovies = (
+        <div>
+          {this.state.movies.map((movie) => {
+            return (
+              <h2 key={movie.Title}>
+                My favorite movie is {movie.Title} {movie.Year}
+              </h2>
+            );
+          })}
+        </div>
+      );
+    }
+
     return (
       <div className="App">
         <h1>Welcome to laraveller.</h1>
-        <p>
-          My favorite movie is {this.state.movies[0].name}
-          {this.state.movies[0].year}.
-        </p>
-        <p>
-          My favorite movie is {this.state.movies[1].name}
-          {this.state.movies[1].year}.
-        </p>
-        <p>
-          My favorite movie is {this.state.movies[2].name}
-          {this.state.movies[2].year}.
-        </p>
-        <input
-          type="text"
-          onChange={this.changeName}
-          value={this.state.movies[0].name}
-        />
+        <button
+          onClick={() => {
+            this.setState({ showMovies: !showMovies });
+          }}
+        >
+          Show Movies
+        </button>
+        {renderMovies}
       </div>
     );
   }
