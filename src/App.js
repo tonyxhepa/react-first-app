@@ -9,6 +9,7 @@ class App extends Component {
     this.state = {
       movies: [],
       showMovies: false,
+      searchInput: "",
     };
   }
 
@@ -19,18 +20,31 @@ class App extends Component {
       .then((response) => response.json())
       .then((apiMovies) =>
         this.setState(() => {
-          return { movies: apiMovies };
+          return { movies: apiMovies, showMovies: true };
         })
       );
   }
+
+  searchMoviesHandler = (event) => {
+    const search = event.target.value.toLocaleLowerCase();
+    this.setState(() => {
+      return { searchInput: search };
+    });
+  };
+
   render() {
-    let { showMovies } = this.state;
-    let renderMovies = null;
+    let { showMovies, searchInput, movies } = this.state;
+
+    const filteredMovies = movies.filter((movie) => {
+      return movie.Title.toLocaleLowerCase().includes(searchInput);
+    });
+
+    let renderMovies = "Loading movies...";
 
     if (showMovies) {
       renderMovies = (
         <div>
-          {this.state.movies.map((movie) => {
+          {filteredMovies.map((movie) => {
             return (
               <h2 key={movie.Title}>
                 My favorite movie is {movie.Title} {movie.Year}
@@ -44,13 +58,11 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Welcome to laraveller.</h1>
-        <button
-          onClick={() => {
-            this.setState({ showMovies: !showMovies });
-          }}
-        >
-          Show Movies
-        </button>
+        <input
+          type="search"
+          placeholder="search movies"
+          onChange={this.searchMoviesHandler}
+        />
         {renderMovies}
       </div>
     );
