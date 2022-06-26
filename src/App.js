@@ -1,4 +1,5 @@
 import { Component } from "react";
+import MovieList from "./Components/movie-list/movie-list";
 
 import "./App.css";
 
@@ -42,27 +43,22 @@ class App extends Component {
     let renderMovies = "Loading movies...";
 
     if (showMovies) {
-      renderMovies = (
-        <div>
-          {filteredMovies.map((movie) => {
-            return (
-              <h2 key={movie.Title}>
-                My favorite movie is {movie.Title} {movie.Year}
-              </h2>
-            );
-          })}
-        </div>
-      );
+      renderMovies = <MovieList movies={filteredMovies} />;
     }
 
     return (
-      <div className="App">
-        <h1>Welcome to laraveller.</h1>
-        <input
-          type="search"
-          placeholder="search movies"
-          onChange={this.searchMoviesHandler}
-        />
+      <div className="max-w-6xl mx-auto bg-slate-200">
+        <h1 className="flex justify-center text-2xl font-semibold">
+          Welcome to laraveller.
+        </h1>
+        <div className="flex justify-center">
+          <input
+            className="m-2 p-2 text-gray-400 rounded-md"
+            type="search"
+            placeholder="search movies"
+            onChange={this.searchMoviesHandler}
+          />
+        </div>
         {renderMovies}
       </div>
     );
